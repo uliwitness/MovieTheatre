@@ -1,0 +1,85 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = UKDVDBookmark; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = UKDVDEvent; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {setWindowSize = id; toggleKeepWindowFrontmost = id; }; 
+            CLASS = UKDVDPlayerAppDelegate; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {filePathView = UKFilePathView; playerView = UKDVDPlayerView; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                addCurrentBookmark = id; 
+                ejectDVD = id; 
+                goNextChapter = id; 
+                goPrevChapter = id; 
+                pause = id; 
+                play = id; 
+                remoteHitAngleButton = id; 
+                remoteHitAudioButton = id; 
+                remoteHitDownButton = id; 
+                remoteHitEnterButton = id; 
+                remoteHitLeftButton = id; 
+                remoteHitMenuButton = id; 
+                remoteHitRightButton = id; 
+                remoteHitSubPictureButton = id; 
+                remoteHitTitleButton = id; 
+                remoteHitUpButton = id; 
+                scanBackward = id; 
+                scanBackward16x = id; 
+                scanBackward2x = id; 
+                scanBackward32x = id; 
+                scanBackward4x = id; 
+                scanBackward8x = id; 
+                scanBackwardOneEighth = id; 
+                scanBackwardOneFourth = id; 
+                scanBackwardOneHalf = id; 
+                scanForward = id; 
+                scanForward16x = id; 
+                scanForward2x = id; 
+                scanForward32x = id; 
+                scanForward4x = id; 
+                scanForward8x = id; 
+                scanForwardOneEighth = id; 
+                scanForwardOneFourth = id; 
+                scanForwardOneHalf = id; 
+                stepBackward = id; 
+                stepForward = id; 
+                takePathFrom = id; 
+            }; 
+            CLASS = UKDVDPlayerView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                bookmarkMenu = NSMenu; 
+                pauseResumeButton = NSButton; 
+                playStopButton = NSButton; 
+                scanBackButton = NSButton; 
+                scanFwdButton = NSButton; 
+                skipBackButton = NSButton; 
+                skipFwdButton = NSButton; 
+                stepBackButton = NSButton; 
+                stepFwdButton = NSButton; 
+                timePassedField = NSTextField; 
+                trackNumberField = NSTextField; 
+            }; 
+            SUPERCLASS = NSView; 
+        }, 
+        {
+            ACTIONS = {
+                pickFile = id; 
+                pickNewFile = id; 
+                revealInFinder = id; 
+                showRealNames = id; 
+                toggleShowRealNames = id; 
+            }; 
+            CLASS = UKFilePathView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {target = id; }; 
+            SUPERCLASS = NSView; 
+        }
+    ); 
+    IBVersion = 1; 
+}

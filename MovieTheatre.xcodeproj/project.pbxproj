@@ -1,0 +1,462 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3D4697FA085CBD370066EB49 /* tv_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D4697F8085CBD370066EB49 /* tv_background.png */; };
+		3D7269BB086D79ED00AEA84A /* NSView+SizeWindowForViewSize.h in Resources */ = {isa = PBXBuildFile; fileRef = 3D7269B9086D79ED00AEA84A /* NSView+SizeWindowForViewSize.h */; };
+		3D7269BC086D79ED00AEA84A /* NSView+SizeWindowForViewSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D7269BA086D79ED00AEA84A /* NSView+SizeWindowForViewSize.m */; };
+		3D73E2CC0885864C0067BEE3 /* DVDPlayback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D73E2CB0885864C0067BEE3 /* DVDPlayback.framework */; };
+		3D80EC8A086D6D7C00CCB5DF /* NSNumber+Minutes.h in Resources */ = {isa = PBXBuildFile; fileRef = 3D80EC88086D6D7C00CCB5DF /* NSNumber+Minutes.h */; };
+		3D80EC8B086D6D7C00CCB5DF /* NSNumber+Minutes.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D80EC89086D6D7C00CCB5DF /* NSNumber+Minutes.m */; };
+		3DBBD859085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DBBD857085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.h */; };
+		3DBBD85A085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DBBD858085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.m */; };
+		3DF3C245085C41FE00033259 /* UKDVDPlayerView.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DF3C243085C41FE00033259 /* UKDVDPlayerView.h */; };
+		3DF3C246085C41FE00033259 /* UKDVDPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF3C244085C41FE00033259 /* UKDVDPlayerView.m */; };
+		3DF3C272085C496300033259 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DF3C271085C496300033259 /* Carbon.framework */; };
+		3DF3C2BC085C561C00033259 /* NSString+CarbonUtilities.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DF3C2BA085C561C00033259 /* NSString+CarbonUtilities.h */; };
+		3DF3C2BD085C561C00033259 /* NSString+CarbonUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF3C2BB085C561C00033259 /* NSString+CarbonUtilities.m */; };
+		3DF3C2C4085C56A300033259 /* UKFilePathView.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DF3C2C2085C56A300033259 /* UKFilePathView.h */; };
+		3DF3C2C5085C56A300033259 /* UKFilePathView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF3C2C3085C56A300033259 /* UKFilePathView.m */; };
+		3DF3C2CF085C56B900033259 /* UKGraphics.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DF3C2CD085C56B900033259 /* UKGraphics.h */; };
+		3DF3C2D0085C56B900033259 /* UKGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF3C2CE085C56B900033259 /* UKGraphics.m */; };
+		3DF3C2D8085C56E200033259 /* PathArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3DF3C2D6085C56E200033259 /* PathArrow.tiff */; };
+		3DF3C2ED085C584300033259 /* UKDVDPlayerAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DF3C2EB085C584300033259 /* UKDVDPlayerAppDelegate.m */; };
+		3DF3C2EE085C584300033259 /* UKDVDPlayerAppDelegate.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DF3C2EC085C584300033259 /* UKDVDPlayerAppDelegate.h */; };
+		3DFDB7A3085CADE000994731 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFDB7A2085CADE000994731 /* IOKit.framework */; };
+		3DFDBAFC085CB69300994731 /* NSFrameView.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DFDBAF8085CB69300994731 /* NSFrameView.h */; };
+		3DFDBAFD085CB69300994731 /* NSGrayFrame.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DFDBAF9085CB69300994731 /* NSGrayFrame.h */; };
+		3DFDBAFE085CB69300994731 /* NSThemeFrame.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DFDBAFA085CB69300994731 /* NSThemeFrame.h */; };
+		3DFDBAFF085CB69300994731 /* NSTitledFrame.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DFDBAFB085CB69300994731 /* NSTitledFrame.h */; };
+		3DFDBB03085CB6A200994731 /* UKCustomWindowFrame.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DFDBB01085CB6A200994731 /* UKCustomWindowFrame.h */; };
+		3DFDBB04085CB6A200994731 /* UKCustomWindowFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DFDBB02085CB6A200994731 /* UKCustomWindowFrame.m */; };
+		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		4A9504CCFFE6A4B311CA0CBA /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		4A9504CDFFE6A4B311CA0CBA /* Deployment */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* MovieTheatre_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieTheatre_Prefix.pch; sourceTree = "<group>"; };
+		3D4697F9085CBD370066EB49 /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = English.lproj/tv_background.png; sourceTree = "<group>"; };
+		3D7269B9086D79ED00AEA84A /* NSView+SizeWindowForViewSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+SizeWindowForViewSize.h"; path = "../UliKit/NSView+SizeWindowForViewSize.h"; sourceTree = "<group>"; };
+		3D7269BA086D79ED00AEA84A /* NSView+SizeWindowForViewSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+SizeWindowForViewSize.m"; path = "../UliKit/NSView+SizeWindowForViewSize.m"; sourceTree = "<group>"; };
+		3D73E2CB0885864C0067BEE3 /* DVDPlayback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DVDPlayback.framework; path = ../../../../../System/Library/Frameworks/DVDPlayback.framework; sourceTree = "<group>"; };
+		3D80EC88086D6D7C00CCB5DF /* NSNumber+Minutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNumber+Minutes.h"; path = "../UliKit/NSNumber+Minutes.h"; sourceTree = "<group>"; };
+		3D80EC89086D6D7C00CCB5DF /* NSNumber+Minutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNumber+Minutes.m"; path = "../UliKit/NSNumber+Minutes.m"; sourceTree = "<group>"; };
+		3DBBD857085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "NSWorkspace+TypeOfVolumeAtPath.h"; path = "../UliKit/NSWorkspace+TypeOfVolumeAtPath.h"; sourceTree = "<group>"; };
+		3DBBD858085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = "NSWorkspace+TypeOfVolumeAtPath.m"; path = "../UliKit/NSWorkspace+TypeOfVolumeAtPath.m"; sourceTree = "<group>"; };
+		3DF3C243085C41FE00033259 /* UKDVDPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UKDVDPlayerView.h; sourceTree = "<group>"; };
+		3DF3C244085C41FE00033259 /* UKDVDPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UKDVDPlayerView.m; sourceTree = "<group>"; };
+		3DF3C271085C496300033259 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		3DF3C2BA085C561C00033259 /* NSString+CarbonUtilities.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "NSString+CarbonUtilities.h"; path = "../UliKit/NSString+CarbonUtilities.h"; sourceTree = "<group>"; };
+		3DF3C2BB085C561C00033259 /* NSString+CarbonUtilities.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = "NSString+CarbonUtilities.m"; path = "../UliKit/NSString+CarbonUtilities.m"; sourceTree = "<group>"; };
+		3DF3C2C2085C56A300033259 /* UKFilePathView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = UKFilePathView.h; path = ../UliKit/UKFilePathView.h; sourceTree = "<group>"; };
+		3DF3C2C3085C56A300033259 /* UKFilePathView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = UKFilePathView.m; path = ../UliKit/UKFilePathView.m; sourceTree = "<group>"; };
+		3DF3C2CD085C56B900033259 /* UKGraphics.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = UKGraphics.h; path = ../UliKit/UKGraphics.h; sourceTree = "<group>"; };
+		3DF3C2CE085C56B900033259 /* UKGraphics.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = UKGraphics.m; path = ../UliKit/UKGraphics.m; sourceTree = "<group>"; };
+		3DF3C2D7085C56E200033259 /* English */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = English; path = /Volumes/Jumper/NewProgramming/SVN/UliKit/English.lproj/PathArrow.tiff; sourceTree = "<absolute>"; };
+		3DF3C2EB085C584300033259 /* UKDVDPlayerAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = UKDVDPlayerAppDelegate.m; sourceTree = "<group>"; };
+		3DF3C2EC085C584300033259 /* UKDVDPlayerAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = UKDVDPlayerAppDelegate.h; sourceTree = "<group>"; };
+		3DFDB7A2085CADE000994731 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
+		3DFDBAF8085CB69300994731 /* NSFrameView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFrameView.h; sourceTree = "<group>"; };
+		3DFDBAF9085CB69300994731 /* NSGrayFrame.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGrayFrame.h; sourceTree = "<group>"; };
+		3DFDBAFA085CB69300994731 /* NSThemeFrame.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSThemeFrame.h; sourceTree = "<group>"; };
+		3DFDBAFB085CB69300994731 /* NSTitledFrame.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTitledFrame.h; sourceTree = "<group>"; };
+		3DFDBB01085CB6A200994731 /* UKCustomWindowFrame.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = UKCustomWindowFrame.h; path = ../UliKit/UKCustomWindowFrame.h; sourceTree = "<group>"; };
+		3DFDBB02085CB6A200994731 /* UKCustomWindowFrame.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = UKCustomWindowFrame.m; path = ../UliKit/UKCustomWindowFrame.m; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* MovieTheatre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieTheatre.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				3DF3C272085C496300033259 /* Carbon.framework in Frameworks */,
+				3DFDB7A3085CADE000994731 /* IOKit.framework in Frameworks */,
+				3D73E2CC0885864C0067BEE3 /* DVDPlayback.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				3DF3C2EC085C584300033259 /* UKDVDPlayerAppDelegate.h */,
+				3DF3C2EB085C584300033259 /* UKDVDPlayerAppDelegate.m */,
+				3DF3C243085C41FE00033259 /* UKDVDPlayerView.h */,
+				3DF3C244085C41FE00033259 /* UKDVDPlayerView.m */,
+				3DF3C2C8085C56A600033259 /* UliKit */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3D73E2CB0885864C0067BEE3 /* DVDPlayback.framework */,
+				3DFDB7A2085CADE000994731 /* IOKit.framework */,
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				3DF3C271085C496300033259 /* Carbon.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* MovieTheatre.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* MovieTheatre */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = MovieTheatre;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* MovieTheatre_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+				3DF3C2D6085C56E200033259 /* PathArrow.tiff */,
+				3D4697F8085CBD370066EB49 /* tv_background.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3DF3C2C8085C56A600033259 /* UliKit */ = {
+			isa = PBXGroup;
+			children = (
+				3DBBD857085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.h */,
+				3DBBD858085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.m */,
+				3DF3C2BA085C561C00033259 /* NSString+CarbonUtilities.h */,
+				3DF3C2BB085C561C00033259 /* NSString+CarbonUtilities.m */,
+				3DF3C2C2085C56A300033259 /* UKFilePathView.h */,
+				3DF3C2C3085C56A300033259 /* UKFilePathView.m */,
+				3DF3C2CD085C56B900033259 /* UKGraphics.h */,
+				3DF3C2CE085C56B900033259 /* UKGraphics.m */,
+				3DFDBB01085CB6A200994731 /* UKCustomWindowFrame.h */,
+				3DFDBB02085CB6A200994731 /* UKCustomWindowFrame.m */,
+				3D80EC88086D6D7C00CCB5DF /* NSNumber+Minutes.h */,
+				3D80EC89086D6D7C00CCB5DF /* NSNumber+Minutes.m */,
+				3D7269B9086D79ED00AEA84A /* NSView+SizeWindowForViewSize.h */,
+				3D7269BA086D79ED00AEA84A /* NSView+SizeWindowForViewSize.m */,
+				3DFDBAF7085CB69300994731 /* PrivateHeaders */,
+			);
+			name = UliKit;
+			sourceTree = "<group>";
+		};
+		3DFDBAF7085CB69300994731 /* PrivateHeaders */ = {
+			isa = PBXGroup;
+			children = (
+				3DFDBAF8085CB69300994731 /* NSFrameView.h */,
+				3DFDBAF9085CB69300994731 /* NSGrayFrame.h */,
+				3DFDBAFA085CB69300994731 /* NSThemeFrame.h */,
+				3DFDBAFB085CB69300994731 /* NSTitledFrame.h */,
+			);
+			name = PrivateHeaders;
+			path = ../UliKit/PrivateHeaders;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* MovieTheatre */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D73E2A8088584EE0067BEE3 /* Build configuration list for PBXNativeTarget "MovieTheatre" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MovieTheatre_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = MovieTheatre;
+				WRAPPER_EXTENSION = app;
+			};
+			dependencies = (
+			);
+			name = MovieTheatre;
+			productInstallPath = "$(HOME)/Applications";
+			productName = MovieTheatre;
+			productReference = 8D1107320486CEB800E47090 /* MovieTheatre.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 3D73E2AC088584EE0067BEE3 /* Build configuration list for PBXProject "MovieTheatre" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				4A9504CCFFE6A4B311CA0CBA /* Development */,
+				4A9504CDFFE6A4B311CA0CBA /* Deployment */,
+			);
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* MovieTheatre */;
+			projectDirPath = "";
+			targets = (
+				8D1107260486CEB800E47090 /* MovieTheatre */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				3DF3C245085C41FE00033259 /* UKDVDPlayerView.h in Resources */,
+				3DF3C2BC085C561C00033259 /* NSString+CarbonUtilities.h in Resources */,
+				3DF3C2C4085C56A300033259 /* UKFilePathView.h in Resources */,
+				3DF3C2CF085C56B900033259 /* UKGraphics.h in Resources */,
+				3DF3C2D8085C56E200033259 /* PathArrow.tiff in Resources */,
+				3DF3C2EE085C584300033259 /* UKDVDPlayerAppDelegate.h in Resources */,
+				3DFDBAFC085CB69300994731 /* NSFrameView.h in Resources */,
+				3DFDBAFD085CB69300994731 /* NSGrayFrame.h in Resources */,
+				3DFDBAFE085CB69300994731 /* NSThemeFrame.h in Resources */,
+				3DFDBAFF085CB69300994731 /* NSTitledFrame.h in Resources */,
+				3DFDBB03085CB6A200994731 /* UKCustomWindowFrame.h in Resources */,
+				3D4697FA085CBD370066EB49 /* tv_background.png in Resources */,
+				3DBBD859085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.h in Resources */,
+				3D80EC8A086D6D7C00CCB5DF /* NSNumber+Minutes.h in Resources */,
+				3D7269BB086D79ED00AEA84A /* NSView+SizeWindowForViewSize.h in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				3DF3C246085C41FE00033259 /* UKDVDPlayerView.m in Sources */,
+				3DF3C2BD085C561C00033259 /* NSString+CarbonUtilities.m in Sources */,
+				3DF3C2C5085C56A300033259 /* UKFilePathView.m in Sources */,
+				3DF3C2D0085C56B900033259 /* UKGraphics.m in Sources */,
+				3DF3C2ED085C584300033259 /* UKDVDPlayerAppDelegate.m in Sources */,
+				3DFDBB04085CB6A200994731 /* UKCustomWindowFrame.m in Sources */,
+				3DBBD85A085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.m in Sources */,
+				3D80EC8B086D6D7C00CCB5DF /* NSNumber+Minutes.m in Sources */,
+				3D7269BC086D79ED00AEA84A /* NSView+SizeWindowForViewSize.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29B97319FDCFA39411CA2CEA /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		3D4697F8085CBD370066EB49 /* tv_background.png */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3D4697F9085CBD370066EB49 /* English */,
+			);
+			name = tv_background.png;
+			sourceTree = "<group>";
+		};
+		3DF3C2D6085C56E200033259 /* PathArrow.tiff */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3DF3C2D7085C56E200033259 /* English */,
+			);
+			name = PathArrow.tiff;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3D73E2A9088584EE0067BEE3 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MovieTheatre_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = MovieTheatre;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D73E2AA088584EE0067BEE3 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MovieTheatre_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = MovieTheatre;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		3D73E2AB088584EE0067BEE3 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MovieTheatre_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = MovieTheatre;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Default;
+		};
+		3D73E2AD088584EE0067BEE3 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		3D73E2AE088584EE0067BEE3 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Deployment;
+		};
+		3D73E2AF088584EE0067BEE3 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3D73E2A8088584EE0067BEE3 /* Build configuration list for PBXNativeTarget "MovieTheatre" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D73E2A9088584EE0067BEE3 /* Development */,
+				3D73E2AA088584EE0067BEE3 /* Deployment */,
+				3D73E2AB088584EE0067BEE3 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D73E2AC088584EE0067BEE3 /* Build configuration list for PBXProject "MovieTheatre" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D73E2AD088584EE0067BEE3 /* Development */,
+				3D73E2AE088584EE0067BEE3 /* Deployment */,
+				3D73E2AF088584EE0067BEE3 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

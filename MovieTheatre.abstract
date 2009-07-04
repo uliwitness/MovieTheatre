@@ -1,0 +1,4 @@
+MovieTheatre 0.1
+A little example app that implements a full DVD Player in Cocoa using Apple's DVDPlayback framework. Includes support for bookmarks. (Xcode 1.5 project, developed on MacOS X 10.3)
+
+Includes a UKDVDPlayerView that takes care of most of the hard work in a small, handy package.
