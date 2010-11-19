@@ -58,8 +58,8 @@
 @interface UKDVDEvent : NSObject
 {
     DVDEventCode        eventCode;      // DVDEventCode.
-    unsigned long       eventValue1;
-    unsigned long       eventValue2;
+    DVDEventValue       eventValue1;
+    DVDEventValue       eventValue2;
 }
 
 -(id)   initWithEventCode: (DVDEventCode)ec value1: (UInt32)v1 value2: (UInt32)v2; // Private.
@@ -105,9 +105,10 @@
 {
     NSString*               dvdPath;            // Path of DVD being played.
     NSMutableArray*         filteredBookmarks;  // Cached lists of bookmarks applying to the current DVD.
-    unsigned long           eventCallbackID;    // Reference to our event callback so we can uninstall it again.
+    DVDEventCallBackRef     eventCallbackID;    // Reference to our event callback so we can uninstall it again.
     NSSize                  aspectRatio;        // Aspect Ratio.
     BOOL                    isAsleep;           // Did the Mac just go to sleep?
+	BOOL					didInitializeDVDForThisView;
     IBOutlet NSMenu*        bookmarkMenu;       // The bookmark menu.
     IBOutlet NSTextField*   timePassedField;    // Time passed during playback.
     IBOutlet NSTextField*   trackNumberField;   // Track number currently playing.
@@ -200,7 +201,7 @@
 // private:
 -(void) viewFrameDidChange: (NSNotification*)notif;
 
-+(void) throwExceptionOnCarbonErr: (OSStatus)err withPrefix: (NSString*)errPrefix;
++(void) logCarbonErr: (OSStatus)err withPrefix: (NSString*)errPrefix;
 +(void) applicationWillTerminate: (NSNotification*)notification;
 
 +(void) loadBookmarksFromPrefs;

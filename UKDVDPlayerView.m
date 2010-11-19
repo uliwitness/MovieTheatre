@@ -96,7 +96,7 @@ static NSMutableArray*  gUKDVDPlayerViewBookmarks = nil;        // List of all b
 //      to our DVD view class like a real OO event.
 // -----------------------------------------------------------------------------
 
-void    UKDVDEventCallback( DVDEventCode inEventCode, UInt32 inEventValue1, UInt32 inEventValue2, UInt32 inRefCon )
+void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue1, DVDEventValue inEventValue2, void* inRefCon )
 {
     UKDVDPlayerView*    view = (UKDVDPlayerView*) inRefCon;
     NSAutoreleasePool*  pool = [[NSAutoreleasePool alloc] init];
@@ -148,7 +148,7 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, UInt32 inEventValue1, UInt
         [fileNC addObserver: self selector: @selector(volumeDidMount:) name: NSWorkspaceDidMountNotification object: nil];
         [fileNC addObserver: self selector: @selector(computerWillSleep:) name: NSWorkspaceWillSleepNotification object: nil];
         [fileNC addObserver: self selector: @selector(computerDidWakeUp:) name: NSWorkspaceDidWakeNotification object: nil];
-        err = DVDRegisterEventCallBack( UKDVDEventCallback, codesToRegister, sizeof(codesToRegister) / sizeof(DVDEventCode), (UInt32) self, &eventCallbackID );
+        err = DVDRegisterEventCallBack( UKDVDEventCallback, codesToRegister, sizeof(codesToRegister) / sizeof(DVDEventCode), self, &eventCallbackID );
         if( err != noErr )
             NSLog( @"initWithFrame DVDRegisterEventCallback() returned Error ID= %ld", err );
         aspectRatio = NSMakeSize(1,1);
@@ -191,31 +191,37 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, UInt32 inEventValue1, UInt
     
     if( [self window] )
     {
-      #if 0     // This should work, but somehow doesn't on 10.3:
+		if( ![[self window] isVisible] )
+		{
+			NSLog( @"Postponing setup, window not yet visible" );
+			return;
+		}
+		
         err = DVDSetVideoWindowID( [[self window] windowNumber] );
         if( err != noErr )
-            NSLog(@"viewDidMoveToWindow DVDSetVideoWindowID() returned Error ID= %ld", err);
-        #if 0
-          NSDictionary*       dict = [[[self window] screen] deviceDescription];
-        #else
-          NSDictionary*       dict = [[NSScreen mainScreen] deviceDescription];
-        #endif
-        CGDirectDisplayID   screenNum = (CGDirectDisplayID) [[dict objectForKey: @"NSScreenNumber"] intValue];
-        NSLog(@"viewDidMoveToWindow screenNum = %lx",screenNum);
-        err = DVDSetVideoDisplay( screenNum );
+        {
+		    NSLog(@"setupDVDPlaying DVDSetVideoWindowID() returned Error ID= %ld", err);
+			return;
+		}
+        
+		NSDictionary*       dict = [[[self window] screen] deviceDescription];
+        CGDirectDisplayID   screenNum = (CGDirectDisplayID) [[dict objectForKey: @"NSScreenNumber"] unsignedIntValue];
+        NSLog(@"setupDVDPlaying screenNum = %lx",screenNum);
+		Boolean				isSupported = false;
+        err = DVDSwitchToDisplay( screenNum, &isSupported );
         if( err != noErr )
-            NSLog(@"viewDidMoveToWindow DVDSetVideoDisplay() returned Error ID= %ld", err);
-      #else
-        WindowRef   carbWindow = [[self window] windowRef];
-        CGrafPtr    port = GetWindowPort( carbWindow );
-        GDHandle    device = LMGetMainDevice();
-        err = DVDSetVideoPort( port );
-        if( err != noErr )
-            NSLog(@"viewDidMoveToWindow DVDSetVideoPort() returned Error ID= %ld (%lx)", err, port);
-        err = DVDSetVideoDevice( device );
-        if( err != noErr )
-            NSLog(@"viewDidMoveToWindow DVDSetVideoDevice() returned Error ID= %ld (%lx)", err, device);
-      #endif
+        {
+		    NSLog(@"setupDVDPlaying DVDSetVideoDisplay() returned Error ID= %ld", err);
+			return;
+		}
+        if( !isSupported )
+        {
+		    NSLog(@"setupDVDPlaying DVD playback not supported on this display.");
+			return;
+		}
+
+		didInitializeDVDForThisView = YES;
+		NSLog( @"Setup completed." );
     }
 }
 
@@ -428,6 +434,8 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, UInt32 inEventValue1, UInt
 -(void) viewDidMoveToWindow
 {
     [super viewDidMoveToWindow];
+	
+	didInitializeDVDForThisView = NO;
     
     [self setupDVDPlaying];
     [self viewFrameDidChange: nil];
@@ -465,12 +473,13 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, UInt32 inEventValue1, UInt
         else
             err = DVDOpenMediaVolume( &ref );
         if( err != kDVDErrorPlaybackOpen )
-            [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"takeVolumePathFrom: DVDOpenMediaVolume(): "];
+            [UKDVDPlayerView logCarbonErr: err withPrefix: @"takeVolumePathFrom: DVDOpenMediaVolume(): "];
         
         dvdPath = path;
     }
     
     [self reloadBookmarkMenu];
+	[self setNeedsDisplay: YES];
 }
 
 
@@ -523,13 +532,9 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, UInt32 inEventValue1, UInt
         displayFrm.size.height = videoSize.height * heightFactor;
         displayFrm.size.width = videoSize.width * heightFactor;
     }
-    
-    box.top = height -displayFrm.origin.y;
-    box.left = displayFrm.origin.x;
-    box.bottom = height -(displayFrm.origin.y +displayFrm.size.height);
-    box.right = displayFrm.origin.x +displayFrm.size.width;
-    
-    OSStatus err = DVDSetVideoBounds( &box );
+	
+	CGRect		cgBounds = NSRectToCGRect(displayFrm);
+    OSStatus err = DVDSetVideoCGBounds( &cgBounds );
     if( err != noErr )
         NSLog(@"viewFrameDidChange DVDSetVideoBounds() returned Error ID= %ld", err);
 }
@@ -541,19 +546,11 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, UInt32 inEventValue1, UInt
 
 -(void) drawRect: (NSRect)rect
 {
-    // Get placeholder color DVDPlayback suggests we use:
-    RGBColor        color = { 0xffff, 0, 0 };
-    OSStatus err = DVDGetVideoKeyColor( &color );
-    if( err != noErr )
-        NSLog(@"drawRect: DVDGetVideoKeyColor() returned Error ID= %ld", err);
-    
-    // RGBColor -> NSColor:
-    float   r, g, b;
-    r = color.red; g = color.green; b = color.blue;
-    r /= 65535; g /= 65535; b /= 65535;
-    
+	if( !didInitializeDVDForThisView )
+		[self setupDVDPlaying];
+	
     // Set that color and fill:
-    [[NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0] set];
+    [[NSColor blackColor] set];
     [NSBezierPath fillRect: rect];
     
     // If we're about to sleep or in the process of waking up, ...
@@ -603,14 +600,16 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
     
     SInt32      outIndex = 0;
     
-    DVDDoMenuMouseOver( HitPointFromEventInView( evt, self ), &outIndex );
+	CGPoint		pos = NSPointToCGPoint([evt locationInWindow]);
+    DVDDoMenuCGMouseOver( &pos, &outIndex );
 }
 
 -(void) mouseUp: (NSEvent*)evt
 {
     SInt32      outIndex = 0;
     
-    DVDDoMenuClick( HitPointFromEventInView( evt, self ), &outIndex );
+	CGPoint		pos = NSPointToCGPoint([evt locationInWindow]);
+    DVDDoMenuCGClick( &pos, &outIndex );
 }
 
 
@@ -618,7 +617,8 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 {
     SInt32      outIndex = 0;
     
-    DVDDoMenuMouseOver( HitPointFromEventInView( evt, self ), &outIndex );
+	CGPoint		pos = NSPointToCGPoint([evt locationInWindow]);
+    DVDDoMenuCGMouseOver( &pos, &outIndex );
 }
 
 
@@ -626,7 +626,8 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 {
     SInt32      outIndex = 0;
     
-    DVDDoMenuMouseOver( HitPointFromEventInView( evt, self ), &outIndex );
+	CGPoint		pos = NSPointToCGPoint([evt locationInWindow]);
+    DVDDoMenuCGMouseOver( &pos, &outIndex );
 }
 
 - (void)mouseEntered:(NSEvent *)theEvent
@@ -666,7 +667,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 {
     Boolean     playing = NO;
     OSStatus err = DVDIsPlaying( &playing );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"isPlaying DVDIsPlaying(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"isPlaying DVDIsPlaying(): "];
     
     return playing;
 }
@@ -674,9 +675,9 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 
 -(BOOL) isPaused
 {
-    Boolean     paused = NO;
+    Boolean     paused = YES;
     OSStatus err = DVDIsPaused( &paused );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"isPaused DVDIsPaused(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"isPaused DVDIsPaused(): "];
     
     return paused;
 }
@@ -696,7 +697,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
     }
     else
         err = DVDStop();
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"pause: DVDPlay(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"pause: DVDPlay(): "];
 }
 
 
@@ -707,7 +708,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
         err = DVDPause();
     else
         err = DVDResume();
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"pause: DVDPause(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"pause: DVDPause(): "];
 }
 
 
@@ -729,14 +730,14 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 -(void) goNextChapter: (id)sender
 {
     OSStatus err = DVDNextChapter();
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"goNextChapter: DVDNextChapter(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"goNextChapter: DVDNextChapter(): "];
 }
 
 
 -(void) goPrevChapter: (id)sender
 {
     OSStatus err = DVDPreviousChapter();
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"goPrevChapter: DVDPreviousChapter(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"goPrevChapter: DVDPreviousChapter(): "];
 }
 
 
@@ -747,14 +748,14 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 -(void) stepForward: (id)sender
 {
     OSStatus err = DVDStepFrame( kDVDScanDirectionForward );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"stepForward: DVDStepFrame(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"stepForward: DVDStepFrame(): "];
 }
 
 
 -(void) stepBackward: (id)sender
 {
     OSStatus err = DVDStepFrame( kDVDScanDirectionBackward );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"stepBackward: DVDStepFrame(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"stepBackward: DVDStepFrame(): "];
 }
 
 
@@ -768,7 +769,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
         err = DVDScan( wantRate, wantDirection );
     else
         DVDResume();
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"scanInDirection:rate: DVDScan(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"scanInDirection:rate: DVDScan(): "];
 }
 
 
@@ -934,35 +935,35 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 -(void) remoteHitUpButton: (id)sender
 {
     OSStatus err = DVDDoUserNavigation( kDVDUserNavigationMoveUp );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"remoteHitUpButton: DVDDoUserNavigation(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitUpButton: DVDDoUserNavigation(): "];
 }
 
 
 -(void) remoteHitDownButton: (id)sender
 {
     OSStatus err = DVDDoUserNavigation( kDVDUserNavigationMoveDown );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"remoteHitDownButton: DVDDoUserNavigation(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitDownButton: DVDDoUserNavigation(): "];
 }
 
 
 -(void) remoteHitLeftButton: (id)sender
 {
     OSStatus err = DVDDoUserNavigation( kDVDUserNavigationMoveLeft );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"remoteHitLeftButton: DVDDoUserNavigation(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitLeftButton: DVDDoUserNavigation(): "];
 }
 
 
 -(void) remoteHitRightButton: (id)sender
 {
     OSStatus err = DVDDoUserNavigation( kDVDUserNavigationMoveRight );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"remoteHitRightButton: DVDDoUserNavigation(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitRightButton: DVDDoUserNavigation(): "];
 }
 
 
 -(void) remoteHitEnterButton: (id)sender
 {
     OSStatus err = DVDDoUserNavigation( kDVDUserNavigationEnter );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"remoteHitEnterButton: DVDDoUserNavigation(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitEnterButton: DVDDoUserNavigation(): "];
 }
 
 
@@ -973,35 +974,35 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 -(void) remoteHitTitleButton: (id)sender
 {
     OSStatus err = DVDGoToMenu( kDVDMenuTitle );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"remoteHitTitleButton: DVDGoToMenu(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitTitleButton: DVDGoToMenu(): "];
 }
 
 
 -(void) remoteHitMenuButton: (id)sender
 {
     OSStatus err = DVDGoToMenu( kDVDMenuRoot );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"remoteHitMenuButton: DVDGoToMenu(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitMenuButton: DVDGoToMenu(): "];
 }
 
 
 -(void) remoteHitAudioButton: (id)sender
 {
     OSStatus err = DVDGoToMenu( kDVDMenuAudio );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"remoteHitAudioButton: DVDGoToMenu(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitAudioButton: DVDGoToMenu(): "];
 }
 
 
 -(void) remoteHitAngleButton: (id)sender
 {
     OSStatus err = DVDGoToMenu( kDVDMenuAngle );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"remoteHitAngleButton: DVDGoToMenu(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitAngleButton: DVDGoToMenu(): "];
 }
 
 
 -(void) remoteHitSubPictureButton: (id)sender
 {
     OSStatus err = DVDGoToMenu( kDVDMenuSubPicture );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"remoteHitSubPictureButton: DVDGoToMenu(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitSubPictureButton: DVDGoToMenu(): "];
 }
 
 
@@ -1121,7 +1122,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
     NSEnumerator*   enny = [bms objectEnumerator];
     UKDVDBookmark*  bm = nil;
     NSMenu*         bmMenu = [[[NSMenu alloc] initWithTitle: @"Bookmarks"] autorelease];
-    id <NSMenuItem> item = nil;
+    NSMenuItem*		item = nil;
     
     while( (bm = [enny nextObject]) )
     {
@@ -1145,13 +1146,13 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
     UInt16          title;
     
     OSStatus err = DVDGetTime( kDVDTimeCodeElapsedSeconds, &pos, &frm );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"currentBookmark DVDGetTime(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"currentBookmark DVDGetTime(): "];
 
     err = DVDGetChapter( &chapter );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"currentBookmark DVDGetChapter(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"currentBookmark DVDGetChapter(): "];
 
     err = DVDGetTitle( &title );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"currentBookmark DVDGetTitle(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"currentBookmark DVDGetTitle(): "];
     
     return [[[UKDVDBookmark alloc] initWithName: nil position: pos frames: frm title: title chapter: chapter dvdName: [self currentDVDName]] autorelease];
 }
@@ -1190,11 +1191,11 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
     // Find old menu and create a new one:
     NSMenu* sup = [bmMenu supermenu];
     int ind = [sup indexOfItemWithSubmenu: bmMenu];
-    id <NSMenuItem> item = [sup itemAtIndex: ind];
+    NSMenuItem* item = [sup itemAtIndex: ind];
     NSString*   mnuName = [item title];
     if( !mnuName )
         mnuName = @"BOOKMARKS";
-    id <NSMenuItem> newItem = [[[NSMenuItem alloc] initWithTitle: mnuName action:0 keyEquivalent:@""] autorelease];
+    NSMenuItem* newItem = [[[NSMenuItem alloc] initWithTitle: mnuName action:0 keyEquivalent:@""] autorelease];
     NSMenu* oldMenu = [bmMenu retain];
     bmMenu = [[self bookmarkMenu] retain];
     
@@ -1203,8 +1204,8 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
     [newItem setSubmenu: bmMenu];
     
     // Move over old menu items:
-    NSEnumerator* enny = [[oldMenu itemArray] objectEnumerator];
-    id<NSMenuItem>  currItem = nil;
+    NSEnumerator*	enny = [[oldMenu itemArray] objectEnumerator];
+    NSMenuItem*		currItem = nil;
     
     while( (currItem = [enny nextObject]) )
     {
@@ -1228,7 +1229,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 //  Utility method:
 // -----------------------------------------------------------------------------
 
-+(void) throwExceptionOnCarbonErr: (OSStatus)err withPrefix: (NSString*)errPrefix
++(void) logCarbonErr: (OSStatus)err withPrefix: (NSString*)errPrefix
 {
     if( err != noErr )
     {
@@ -1248,7 +1249,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
                 break;
         }
         
-        [NSException raise: @"UKDVDPlayerException" format: @"%@%@", errPrefix, errMsg];
+        NSLog( @"Error: %@%@", errPrefix, errMsg );
     }
 }
 
@@ -1374,21 +1375,21 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 {
     OSStatus    err = DVDStop();    // Stop movie, to work around some DVD's restrictions on when we can change tracks.
     if( err != noErr && err != kDVDErrorUserActionNoOp )
-        [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"set DVDStop(): "];
+        [UKDVDPlayerView logCarbonErr: err withPrefix: @"set DVDStop(): "];
     
     err = DVDSetTitle( titleNum );
     if( err != noErr && err != kDVDErrorUserActionNoOp )
-        [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"set DVDSetTitle(): "];
+        [UKDVDPlayerView logCarbonErr: err withPrefix: @"set DVDSetTitle(): "];
     
     err = DVDSetChapter( chapterNum );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"set DVDSetChapter(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"set DVDSetChapter(): "];
     
     err = DVDSetTime( kDVDTimeCodeElapsedSeconds, position, framePosition );
-    [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"set DVDSetTime(): "];
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"set DVDSetTime(): "];
 
     err = DVDPlay();                // Resume movie, to work around some DVD's restrictions on when we can change tracks.
     if( err != noErr && err != kDVDErrorUserActionNoOp )
-        [UKDVDPlayerView throwExceptionOnCarbonErr: err withPrefix: @"set DVDPlay(): "];
+        [UKDVDPlayerView logCarbonErr: err withPrefix: @"set DVDPlay(): "];
 }
 
 
