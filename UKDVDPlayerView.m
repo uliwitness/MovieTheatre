@@ -180,6 +180,27 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 
 
 // -----------------------------------------------------------------------------
+//  Utility methods for mouse tracking:
+// -----------------------------------------------------------------------------
+
+-(CGPoint)	flippedWindowCGPointForNSPoint: (NSPoint)cocoaPoint
+{
+	CGPoint	outPoint = NSPointToCGPoint(cocoaPoint);
+	outPoint.y = [[self window] frame].size.height -outPoint.y;
+	
+	return outPoint;
+}
+
+
+-(CGRect)	flippedWindowCGRectForNSRect: (NSRect)cocoaRect
+{
+	CGRect	outRect = NSRectToCGRect(cocoaRect);
+	outRect.origin.y = [[self window] frame].size.height -NSMaxY(cocoaRect);
+	return outRect;
+}
+
+
+// -----------------------------------------------------------------------------
 //  setupDVDPlaying:
 //      Register the DVD playing window. Called whenever we move to a new
 //      window.
@@ -533,7 +554,7 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
         displayFrm.size.width = videoSize.width * heightFactor;
     }
 	
-	CGRect		cgBounds = NSRectToCGRect(displayFrm);
+	CGRect		cgBounds = [self flippedWindowCGRectForNSRect: displayFrm];
     OSStatus err = DVDSetVideoCGBounds( &cgBounds );
     if( err != noErr )
         NSLog(@"viewFrameDidChange DVDSetVideoBounds() returned Error ID= %ld", err);
@@ -560,35 +581,6 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 
 
 // -----------------------------------------------------------------------------
-//  Utility methods for mouse tracking:
-// -----------------------------------------------------------------------------
-
-Point   QDPointFromNSPoint( NSPoint nsp )
-{
-    Point       qdp;
-    
-    qdp.h = nsp.x;
-    qdp.v = nsp.y;
-    
-    return qdp;
-}
-
-
-// Main coordinate-conversion bottleneck:
-Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
-{
-    NSView*     contView = [[self window] contentView];
-    NSPoint     clickPos = [evt locationInWindow];
-    //NSLog( @"%@", NSStringFromPoint(clickPos) );
-    
-    clickPos.x += [self frame].origin.x;
-    clickPos.y -= [self frame].origin.y;
-    
-    return QDPointFromNSPoint( clickPos );
-}
-
-
-// -----------------------------------------------------------------------------
 //  mouseDown:
 //      On mouseDown, highlight whatever the mouse is over, but don't trigger
 //      a click (we save that for mouseUp).
@@ -600,7 +592,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
     
     SInt32      outIndex = 0;
     
-	CGPoint		pos = NSPointToCGPoint([evt locationInWindow]);
+	CGPoint		pos = [self flippedWindowCGPointForNSPoint: [evt locationInWindow]];
     DVDDoMenuCGMouseOver( &pos, &outIndex );
 }
 
@@ -608,7 +600,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 {
     SInt32      outIndex = 0;
     
-	CGPoint		pos = NSPointToCGPoint([evt locationInWindow]);
+	CGPoint		pos = [self flippedWindowCGPointForNSPoint: [evt locationInWindow]];
     DVDDoMenuCGClick( &pos, &outIndex );
 }
 
@@ -617,7 +609,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 {
     SInt32      outIndex = 0;
     
-	CGPoint		pos = NSPointToCGPoint([evt locationInWindow]);
+	CGPoint		pos = [self flippedWindowCGPointForNSPoint: [evt locationInWindow]];
     DVDDoMenuCGMouseOver( &pos, &outIndex );
 }
 
@@ -626,7 +618,7 @@ Point   HitPointFromEventInView( NSEvent* evt, NSView* self )
 {
     SInt32      outIndex = 0;
     
-	CGPoint		pos = NSPointToCGPoint([evt locationInWindow]);
+	CGPoint		pos = [self flippedWindowCGPointForNSPoint: [evt locationInWindow]];
     DVDDoMenuCGMouseOver( &pos, &outIndex );
 }
 
