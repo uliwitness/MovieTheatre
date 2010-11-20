@@ -45,6 +45,7 @@
     [filePathView setAction: @selector(takePathFrom:)];
     [filePathView setCanChooseFiles: NO];
     [filePathView setCanChooseDirectories: YES];
+    [filePathView setTreatsFilePackagesAsDirectories: YES];
 	
 	[[playerView window] setBackgroundColor: [NSColor colorWithPatternImage: [NSImage imageNamed: @"tv_background"]]];
 }

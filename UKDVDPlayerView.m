@@ -484,15 +484,23 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
             path = [sender string];
     }
     
-    FSRef           ref;
-    
-    if( path && [path getFSRef: &ref] )
+	NSURL*		mediaURL = path ? [NSURL fileURLWithPath: path] : nil;
+    if( mediaURL )
     {
+		if( [[[mediaURL pathExtension] lowercaseString] isEqualToString: @"dvdmedia"] )
+			mediaURL = [mediaURL URLByAppendingPathComponent: @"VIDEO_TS"];
+		
         OSStatus err;
-        if( [[path lastPathComponent] isEqualToString: @"VIDEO_TS"] )
-            err = DVDOpenMediaFile( &ref );
-        else
-            err = DVDOpenMediaVolume( &ref );
+		
+		err = DVDCloseMediaFile();
+		err = DVDCloseMediaVolume();
+		
+		Boolean		isValidURL = false;
+		err = DVDIsValidMediaURL( (CFURLRef) mediaURL, &isValidURL );
+        if( err == noErr && isValidURL )
+            err = DVDOpenMediaFileWithURL( (CFURLRef) mediaURL );
+        if( err != noErr && isValidURL )
+            err = DVDOpenMediaVolumeWithURL( (CFURLRef) mediaURL );
         if( err != kDVDErrorPlaybackOpen )
             [UKDVDPlayerView logCarbonErr: err withPrefix: @"takeVolumePathFrom: DVDOpenMediaVolume(): "];
         
@@ -500,6 +508,7 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
     }
     
     [self reloadBookmarkMenu];
+	[self play: self];
 	[self setNeedsDisplay: YES];
 }
 
@@ -553,6 +562,9 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
         displayFrm.size.height = videoSize.height * heightFactor;
         displayFrm.size.width = videoSize.width * heightFactor;
     }
+	
+	displayFrm.origin.x += truncf((frm.size.width -displayFrm.size.width) / 2);
+	displayFrm.origin.y += truncf((frm.size.height -displayFrm.size.height) / 2);
 	
 	CGRect		cgBounds = [self flippedWindowCGRectForNSRect: displayFrm];
     OSStatus err = DVDSetVideoCGBounds( &cgBounds );
@@ -679,7 +691,11 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 {
     OSStatus    err = noErr;
     if( ![self isPlaying] )
+	{
+		if( !didInitializeDVDForThisView )
+			[self setupDVDPlaying];
         err = DVDPlay();
+	}
     else if( [self scanRate] != 0
             || [self isPaused] )
     {
