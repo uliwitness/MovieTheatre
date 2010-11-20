@@ -12,7 +12,6 @@
 
 #import "UKDVDPlayerAppDelegate.h"
 #import "UKDVDPlayerView.h"
-#import "NSString+CarbonUtilities.h"
 #import "NSWorkspace+TypeOfVolumeAtPath.h"
 #import "NSView+SizeWindowForViewSize.h"
 

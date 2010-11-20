@@ -11,7 +11,6 @@
 // -----------------------------------------------------------------------------
 
 #import "UKDVDPlayerView.h"
-#import "NSString+CarbonUtilities.h"
 #import "NSNumber+Minutes.h"
 #import "NSWorkspace+TypeOfVolumeAtPath.h"
 #import <Carbon/Carbon.h>
@@ -394,12 +393,13 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 
 -(void) volumeDidMount: (NSNotification*)notif
 {
+	NSLog( @"volumeDidMount: %@ %@", notif, [notif userInfo] );
     // Force bookmark menu to show the ones for this DVD:
     [filteredBookmarks release];
     filteredBookmarks = nil;
     
     // No DVD yet? Get one!
-    if( dvdPath == nil )
+    //if( dvdPath == nil )
     {
         dvdPath = [[notif userInfo] objectForKey: @"NSDevicePath"];
         NSString*   volType = [[NSWorkspace sharedWorkspace] typeOfVolumeAtPath: dvdPath];
