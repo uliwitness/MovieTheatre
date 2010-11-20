@@ -137,6 +137,9 @@
 -(void) remoteHitDownButton: (id)sender;
 -(void) remoteHitUpButton: (id)sender;
 
+-(void) remoteHitCenterButton: (id)sender;	// Depending on context, this is "enter" or "play/pause".
+-(void) remoteHitBackButton: (id)sender;	// Depending on context, this is back, title, or menu.
+
 -(void) remoteHitTitleButton: (id)sender;
 -(void) remoteHitMenuButton: (id)sender;
 -(void) remoteHitAudioButton: (id)sender;

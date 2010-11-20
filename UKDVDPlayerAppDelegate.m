@@ -14,6 +14,7 @@
 #import "UKDVDPlayerView.h"
 #import "NSWorkspace+TypeOfVolumeAtPath.h"
 #import "NSView+SizeWindowForViewSize.h"
+#import <Carbon/Carbon.h>
 
 
 @implementation UKDVDPlayerAppDelegate
@@ -46,7 +47,16 @@
     [filePathView setCanChooseDirectories: YES];
     [filePathView setTreatsFilePackagesAsDirectories: YES];
 	
-	[[playerView window] setBackgroundColor: [NSColor colorWithPatternImage: [NSImage imageNamed: @"tv_background"]]];
+	SetSystemUIMode( kUIModeAllSuppressed, 0 );
+	
+	NSRect		bounds = [[[playerView window] screen] frame];
+	NSRect		frame = bounds;
+	bounds.origin = NSZeroPoint;
+	[[playerView window] setFrame: frame display: NO];
+	[playerView setFrame: bounds];
+	
+	[[HIDRemote sharedHIDRemote] setDelegate: self];
+	[[HIDRemote sharedHIDRemote] startRemoteControl: kHIDRemoteModeExclusiveAuto];
 }
 
 
@@ -199,6 +209,48 @@
     newFrame.size = [playerView windowSizeForViewSize: vidSize];
     
     return newFrame;
+}
+
+
+-(void)	hidRemote: (HIDRemote *)hidRemote eventWithButton: (HIDRemoteButtonCode)buttonCode
+			isPressed: (BOOL)isPressed fromHardwareWithAttributes: (NSMutableDictionary *)attributes
+{
+	if( !isPressed )
+	{
+		switch( buttonCode )
+		{
+			case kHIDRemoteButtonCodeUp:
+				[playerView remoteHitUpButton: self];
+				break;
+				
+			case kHIDRemoteButtonCodeDown:
+				[playerView remoteHitDownButton: self];
+				break;
+				
+			case kHIDRemoteButtonCodeLeft:
+				[playerView remoteHitLeftButton: self];
+				break;
+				
+			case kHIDRemoteButtonCodeRight:
+				[playerView remoteHitRightButton: self];
+				break;
+				
+			case kHIDRemoteButtonCodeCenter:
+				[playerView remoteHitCenterButton: self];
+				break;
+				
+			case kHIDRemoteButtonCodeMenu:
+				[playerView remoteHitBackButton: self];
+				break;
+				
+			case kHIDRemoteButtonCodePlay:
+				[playerView play: self];
+				break;
+				
+			default:
+				break;
+		}
+	}
 }
 
 @end

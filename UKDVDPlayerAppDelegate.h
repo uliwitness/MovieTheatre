@@ -12,6 +12,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "UKFilePathView.h"
+#import "HIDRemote.h"
 
 
 // -----------------------------------------------------------------------------
@@ -26,7 +27,7 @@
 //      Application Delegate.
 // -----------------------------------------------------------------------------
 
-@interface UKDVDPlayerAppDelegate : NSObject
+@interface UKDVDPlayerAppDelegate : NSObject <HIDRemoteDelegate>
 {
     IBOutlet UKFilePathView*    filePathView;       // Path of the DVD to play.
     IBOutlet UKDVDPlayerView*   playerView;         // The view where we'll be playing the DVD.

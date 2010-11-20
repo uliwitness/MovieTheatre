@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3D4697FA085CBD370066EB49 /* tv_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D4697F8085CBD370066EB49 /* tv_background.png */; };
 		3D7269BB086D79ED00AEA84A /* NSView+SizeWindowForViewSize.h in Resources */ = {isa = PBXBuildFile; fileRef = 3D7269B9086D79ED00AEA84A /* NSView+SizeWindowForViewSize.h */; };
 		3D7269BC086D79ED00AEA84A /* NSView+SizeWindowForViewSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D7269BA086D79ED00AEA84A /* NSView+SizeWindowForViewSize.m */; };
 		3D73E2CC0885864C0067BEE3 /* DVDPlayback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D73E2CB0885864C0067BEE3 /* DVDPlayback.framework */; };
@@ -28,7 +27,9 @@
 		3DF3C2EE085C584300033259 /* UKDVDPlayerAppDelegate.h in Resources */ = {isa = PBXBuildFile; fileRef = 3DF3C2EC085C584300033259 /* UKDVDPlayerAppDelegate.h */; };
 		3DFDB7A3085CADE000994731 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DFDB7A2085CADE000994731 /* IOKit.framework */; };
 		553F5BAC1297102B0062AD1D /* UKFadedDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 553F5BAB1297102B0062AD1D /* UKFadedDrawing.m */; };
-		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		553F5D5212982C2D0062AD1D /* UKBorderlessWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 553F5D5112982C2D0062AD1D /* UKBorderlessWindow.m */; };
+		553F5DA2129831C70062AD1D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 553F5DA0129831C70062AD1D /* MainMenu.xib */; };
+		553F5DB8129834A80062AD1D /* HIDRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 553F5DB7129834A80062AD1D /* HIDRemote.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -38,11 +39,9 @@
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* MovieTheatre_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieTheatre_Prefix.pch; sourceTree = "<group>"; };
-		3D4697F9085CBD370066EB49 /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = English.lproj/tv_background.png; sourceTree = "<group>"; };
 		3D7269B9086D79ED00AEA84A /* NSView+SizeWindowForViewSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+SizeWindowForViewSize.h"; path = "../UliKit/NSView+SizeWindowForViewSize.h"; sourceTree = "<group>"; };
 		3D7269BA086D79ED00AEA84A /* NSView+SizeWindowForViewSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+SizeWindowForViewSize.m"; path = "../UliKit/NSView+SizeWindowForViewSize.m"; sourceTree = "<group>"; };
 		3D73E2CB0885864C0067BEE3 /* DVDPlayback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DVDPlayback.framework; path = ../../../../../System/Library/Frameworks/DVDPlayback.framework; sourceTree = "<group>"; };
@@ -64,6 +63,11 @@
 		3DFDB7A2085CADE000994731 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
 		553F5BAA1297102B0062AD1D /* UKFadedDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKFadedDrawing.h; path = ../UliKit/UKFadedDrawing.h; sourceTree = SOURCE_ROOT; };
 		553F5BAB1297102B0062AD1D /* UKFadedDrawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UKFadedDrawing.m; path = ../UliKit/UKFadedDrawing.m; sourceTree = SOURCE_ROOT; };
+		553F5D5012982C2D0062AD1D /* UKBorderlessWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UKBorderlessWindow.h; path = ../UliKit/UKBorderlessWindow.h; sourceTree = SOURCE_ROOT; };
+		553F5D5112982C2D0062AD1D /* UKBorderlessWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UKBorderlessWindow.m; path = ../UliKit/UKBorderlessWindow.m; sourceTree = SOURCE_ROOT; };
+		553F5DA1129831C70062AD1D /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		553F5DB6129834A80062AD1D /* HIDRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HIDRemote.h; path = ../HIDRemoteSDK/HIDRemote/HIDRemote.h; sourceTree = SOURCE_ROOT; };
+		553F5DB7129834A80062AD1D /* HIDRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HIDRemote.m; path = ../HIDRemoteSDK/HIDRemote/HIDRemote.m; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MovieTheatre.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieTheatre.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -91,6 +95,7 @@
 				3DF3C243085C41FE00033259 /* UKDVDPlayerView.h */,
 				3DF3C244085C41FE00033259 /* UKDVDPlayerView.m */,
 				3DF3C2C8085C56A600033259 /* UliKit */,
+				553F5DB9129834AD0062AD1D /* IOSpirit HIDRemote */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -149,8 +154,7 @@
 			children = (
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
-				3D4697F8085CBD370066EB49 /* tv_background.png */,
+				553F5DA0129831C70062AD1D /* MainMenu.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -181,8 +185,19 @@
 				3D7269BA086D79ED00AEA84A /* NSView+SizeWindowForViewSize.m */,
 				553F5BAA1297102B0062AD1D /* UKFadedDrawing.h */,
 				553F5BAB1297102B0062AD1D /* UKFadedDrawing.m */,
+				553F5D5012982C2D0062AD1D /* UKBorderlessWindow.h */,
+				553F5D5112982C2D0062AD1D /* UKBorderlessWindow.m */,
 			);
 			name = UliKit;
+			sourceTree = "<group>";
+		};
+		553F5DB9129834AD0062AD1D /* IOSpirit HIDRemote */ = {
+			isa = PBXGroup;
+			children = (
+				553F5DB6129834A80062AD1D /* HIDRemote.h */,
+				553F5DB7129834A80062AD1D /* HIDRemote.m */,
+			);
+			name = "IOSpirit HIDRemote";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,17 +250,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				3DF3C245085C41FE00033259 /* UKDVDPlayerView.h in Resources */,
 				3DF3C2BC085C561C00033259 /* NSString+CarbonUtilities.h in Resources */,
 				3DF3C2C4085C56A300033259 /* UKFilePathView.h in Resources */,
 				3DF3C2CF085C56B900033259 /* UKGraphics.h in Resources */,
 				3DF3C2EE085C584300033259 /* UKDVDPlayerAppDelegate.h in Resources */,
-				3D4697FA085CBD370066EB49 /* tv_background.png in Resources */,
 				3DBBD859085F0D3A006C22E5 /* NSWorkspace+TypeOfVolumeAtPath.h in Resources */,
 				3D80EC8A086D6D7C00CCB5DF /* NSNumber+Minutes.h in Resources */,
 				3D7269BB086D79ED00AEA84A /* NSView+SizeWindowForViewSize.h in Resources */,
+				553F5DA2129831C70062AD1D /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +280,8 @@
 				3D80EC8B086D6D7C00CCB5DF /* NSNumber+Minutes.m in Sources */,
 				3D7269BC086D79ED00AEA84A /* NSView+SizeWindowForViewSize.m in Sources */,
 				553F5BAC1297102B0062AD1D /* UKFadedDrawing.m in Sources */,
+				553F5D5212982C2D0062AD1D /* UKBorderlessWindow.m in Sources */,
+				553F5DB8129834A80062AD1D /* HIDRemote.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,20 +296,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		553F5DA0129831C70062AD1D /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
+				553F5DA1129831C70062AD1D /* English */,
 			);
-			name = MainMenu.nib;
-			sourceTree = "<group>";
-		};
-		3D4697F8085CBD370066EB49 /* tv_background.png */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3D4697F9085CBD370066EB49 /* English */,
-			);
-			name = tv_background.png;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

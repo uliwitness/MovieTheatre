@@ -13,6 +13,7 @@
 #import "UKDVDPlayerView.h"
 #import "NSNumber+Minutes.h"
 #import "NSWorkspace+TypeOfVolumeAtPath.h"
+#import "NSView+SizeWindowForViewSize.h"
 #import <Carbon/Carbon.h>
 
 
@@ -37,7 +38,7 @@ static NSMutableArray*  gUKDVDPlayerViewBookmarks = nil;        // List of all b
 +(void) initialize
 {
     //NSLog(@"+) Registered DVD Framework.");
-    DVDInitialize();    // Comment out to be able to debug.
+	DVDInitialize();    // Comment out to be able to debug.
     DVDEnableWebAccess( true );
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(applicationWillTerminate:) name: NSApplicationWillTerminateNotification object: NSApp];
     [UKDVDPlayerView loadBookmarksFromPrefs];
@@ -268,7 +269,8 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
         
         // The time in this chapter changed (called ~ every second):
         case kDVDEventChapterTime:
-           break;
+			UpdateSystemActivity(UsrActivity);
+           	break;
         
         // The time in this title changed (called ~ every second):
         case kDVDEventTitleTime:
@@ -565,9 +567,9 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 	
 	displayFrm.origin.x += truncf((frm.size.width -displayFrm.size.width) / 2);
 	displayFrm.origin.y += truncf((frm.size.height -displayFrm.size.height) / 2);
-	
+		
 	CGRect		cgBounds = [self flippedWindowCGRectForNSRect: displayFrm];
-    OSStatus err = DVDSetVideoCGBounds( &cgBounds );
+    OSStatus	err = DVDSetVideoCGBounds( &cgBounds );
     if( err != noErr )
         NSLog(@"viewFrameDidChange DVDSetVideoBounds() returned Error ID= %ld", err);
 }
@@ -583,12 +585,14 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 		[self setupDVDPlaying];
 	
     // Set that color and fill:
-    [[NSColor blackColor] set];
+    [[NSColor blueColor] set];
     [NSBezierPath fillRect: rect];
     
     // If we're about to sleep or in the process of waking up, ...
     if( isAsleep )  // Display a "please wait" string.
         [@"Please Wait..." drawAtPoint: NSMakePoint(16,16) withAttributes: [NSDictionary dictionaryWithObjectsAndKeys: [NSColor whiteColor], NSForegroundColorAttributeName, nil]];
+	
+	DVDUpdateVideo();
 }
 
 
@@ -602,10 +606,12 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 {
     [[self window] makeFirstResponder: self];
     
-    SInt32      outIndex = 0;
-    
+	Boolean		isOnMenu = false;
+	DVDMenu		whichMenu = kDVDMenuNone;
+	DVDIsOnMenu( &isOnMenu, &whichMenu );										
+	SInt32      outIndex = 0;
 	CGPoint		pos = [self flippedWindowCGPointForNSPoint: [evt locationInWindow]];
-    DVDDoMenuCGMouseOver( &pos, &outIndex );
+	DVDDoMenuCGMouseOver( &pos, &outIndex );
 }
 
 -(void) mouseUp: (NSEvent*)evt
@@ -957,14 +963,20 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 -(void) remoteHitLeftButton: (id)sender
 {
     OSStatus err = DVDDoUserNavigation( kDVDUserNavigationMoveLeft );
-    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitLeftButton: DVDDoUserNavigation(): "];
+	if( err != kDVDErrorUserActionNoOp )
+    	[UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitLeftButton: DVDDoUserNavigation(): "];
+	else
+		[self scanBackward8x: sender];
 }
 
 
 -(void) remoteHitRightButton: (id)sender
 {
     OSStatus err = DVDDoUserNavigation( kDVDUserNavigationMoveRight );
-    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitRightButton: DVDDoUserNavigation(): "];
+	if( err != kDVDErrorUserActionNoOp )
+  		[UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitRightButton: DVDDoUserNavigation(): "];
+	else
+		[self scanForward8x: sender];
 }
 
 
@@ -972,6 +984,26 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 {
     OSStatus err = DVDDoUserNavigation( kDVDUserNavigationEnter );
     [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitEnterButton: DVDDoUserNavigation(): "];
+}
+
+
+-(void) remoteHitCenterButton: (id)sender
+{
+    OSStatus err = DVDDoUserNavigation( kDVDUserNavigationEnter );
+	if( err != kDVDErrorUserActionNoOp )
+    	[UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitEnterButton: DVDDoUserNavigation(): "];
+	else
+		[self play: sender];
+}
+
+
+-(void) remoteHitBackButton: (id)sender
+{
+    OSStatus err = DVDGoBackOneLevel();
+		err = DVDGoToMenu( kDVDMenuTitle );
+	if( err == kDVDErrorUserActionNoOp )
+		err = DVDGoToMenu( kDVDMenuRoot );
+    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitBackButton: DVDGoBackOneLevel(): "];
 }
 
 
@@ -1059,7 +1091,11 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 
     if( [str isEqualToString: @"\n"] || [str isEqualToString: @"\r"] )
         [self insertNewline: nil];
-    else
+	else if( [str isEqualToString: @"\033"] )
+        [self remoteHitBackButton: nil];
+ 	else if( [str isEqualToString: @" "] )
+        [self play: nil];
+	else
         [super keyDown: evt];
 }
 
