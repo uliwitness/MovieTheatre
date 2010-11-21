@@ -585,7 +585,7 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 		[self setupDVDPlaying];
 	
     // Set that color and fill:
-    [[NSColor blueColor] set];
+    [[NSColor blackColor] set];
     [NSBezierPath fillRect: rect];
     
     // If we're about to sleep or in the process of waking up, ...
