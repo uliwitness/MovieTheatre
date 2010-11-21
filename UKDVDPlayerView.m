@@ -949,14 +949,20 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
 -(void) remoteHitUpButton: (id)sender
 {
     OSStatus err = DVDDoUserNavigation( kDVDUserNavigationMoveUp );
-    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitUpButton: DVDDoUserNavigation(): "];
+	if( err != kDVDErrorUserActionNoOp )
+    	[UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitUpButton: DVDDoUserNavigation(): "];
+	else
+		[self setVolume: [self volume] +0.1];
 }
 
 
 -(void) remoteHitDownButton: (id)sender
 {
     OSStatus err = DVDDoUserNavigation( kDVDUserNavigationMoveDown );
-    [UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitDownButton: DVDDoUserNavigation(): "];
+	if( err != kDVDErrorUserActionNoOp )
+  		[UKDVDPlayerView logCarbonErr: err withPrefix: @"remoteHitDownButton: DVDDoUserNavigation(): "];
+	else
+		[self setVolume: [self volume] -0.1];
 }
 
 
@@ -1266,6 +1272,26 @@ void    UKDVDEventCallback( DVDEventCode inEventCode, DVDEventValue inEventValue
     [oldMenu autorelease];
     
     return bmMenu;
+}
+
+
+-(void)	setVolume: (float)volume
+{
+	if( volume > 1.0 )
+		volume = 1.0;
+	else if( volume < 0.0 )
+		volume = 0.0;
+	DVDSetAudioVolume( roundf( 255.0 * volume) );
+}
+
+
+-(float)	volume
+{
+	UInt16		currVolume = 0;
+	
+	DVDGetAudioVolume( &currVolume );
+	
+	return ((float)currVolume) / 255.0;
 }
 
 

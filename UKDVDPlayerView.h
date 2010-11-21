@@ -180,6 +180,10 @@
 -(void) goNextChapter: (id)sender;
 -(void) goPrevChapter: (id)sender;
 
+-(void)		setVolume: (float)volume;
+-(float)	volume;
+
+
 // Cool stuff:
 -(NSMenu*)          releaseBookmarkMenuAndAllocNewOne: (NSMenu*)bookmarkMenu;   // Takes a retained NSMenu, releases it, creates a new retained menu and inserts that in its stead.
 -(NSMenu*)          bookmarkMenu;
